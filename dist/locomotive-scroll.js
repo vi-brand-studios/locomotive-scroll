@@ -1,4 +1,4 @@
-/* locomotive-scroll v4.1.3 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
+/* locomotive-scroll v4.1.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -269,6 +269,7 @@
     },
     direction: 'vertical',
     gestureDirection: 'vertical',
+    virtualScrollInterceptor: function virtualScrollInterceptor() {},
     reloadOnContextChange: false,
     lerp: 0.1,
     "class": 'is-inview',
@@ -1283,7 +1284,7 @@
        *
        * @param  Available options :
        *          target {node, string, "top", "bottom", int} - The DOM element we want to scroll to
-       *          options {object} - Options object for additionnal settings.
+       *          options {object} - Options object for additional settings.
        * @return {void}
        */
 
@@ -2078,6 +2079,7 @@
       _this.parallaxElements = {};
       _this.stop = false;
       _this.scrollbarContainer = options.scrollbarContainer;
+      _this.virtualScrollInterceptor = options.virtualScrollInterceptor;
       _this.checkKey = _this.checkKey.bind(_assertThisInitialized(_this));
       window.addEventListener('keydown', _this.checkKey, false);
       return _this;
@@ -2109,6 +2111,10 @@
           passive: true
         });
         this.vs.on(function (e) {
+          if (_this2.virtualScrollInterceptor(e) === false) {
+            return;
+          }
+
           if (_this2.stop) {
             return;
           }
@@ -2868,7 +2874,7 @@
        *
        * @param  Available options :
        *          target {node, string, "top", "bottom", int} - The DOM element we want to scroll to
-       *          options {object} - Options object for additionnal settings.
+       *          options {object} - Options object for additional settings.
        * @return {void}
        */
 

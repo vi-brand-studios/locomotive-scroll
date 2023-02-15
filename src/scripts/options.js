@@ -7,6 +7,7 @@ export const defaults = {
     initPosition: { x: 0, y: 0 },
     direction: 'vertical',
     gestureDirection: 'vertical',
+    virtualScrollInterceptor: () => {},
     reloadOnContextChange: false,
     lerp: 0.1,
     class: 'is-inview',

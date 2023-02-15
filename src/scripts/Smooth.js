@@ -35,6 +35,7 @@ export default class extends Core {
         this.parallaxElements = {};
         this.stop = false;
         this.scrollbarContainer = options.scrollbarContainer;
+        this.virtualScrollInterceptor = options.virtualScrollInterceptor;
 
         this.checkKey = this.checkKey.bind(this);
         window.addEventListener('keydown', this.checkKey, false);
@@ -66,6 +67,10 @@ export default class extends Core {
         });
 
         this.vs.on((e) => {
+            if (this.virtualScrollInterceptor(e) === false) {
+                return;
+            }
+
             if (this.stop) {
                 return;
             }
